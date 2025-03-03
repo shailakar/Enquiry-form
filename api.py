@@ -34,7 +34,7 @@ def upload_to_s3():
             CSV_FILE,  # Local file
             S3_BUCKET_NAME,  # S3 bucket name
             S3_FILE_NAME,  # S3 file name
-            ExtraArgs={"ContentType": "text/csv", "ACL": "public-read"}  # Set correct content type & make it public
+            ExtraArgs={"ContentType": "text/plain", "ACL": "public-read"}  # Set correct content type & make it public
         )
         print(f"File uploaded to S3: {S3_FILE_NAME}")
         return True
