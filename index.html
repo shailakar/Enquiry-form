@@ -37,6 +37,12 @@
         button:hover {
             background-color: #0056b3;
         }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +60,7 @@
             <input type="text" name="child_name" placeholder="Child's Name" required><br>
             <input type="tel" name="phone" placeholder="Phone Number" required><br>
             <input type="email" name="email" placeholder="Email ID" required><br>
-            <input type="date" name="dob" placeholder="Date of Birth" required><br>
+            <input type="date" name="dob" required><br>
             <select name="class" required>
                 <option value="">Select Class</option>
                 <option value="Playgroup">Playgroup</option>
@@ -64,32 +70,49 @@
             </select><br>
             <input type="text" name="occupation" placeholder="Occupation" required><br>
             <input type="text" name="address" placeholder="Address" required><br>
-            <button type="submit">Submit</button>
+            <button type="submit" id="submitBtn">Submit</button>
         </form>
+        <p id="message"></p>
     </div>
 
     <!-- JavaScript to Handle Form Submission -->
     <script>
-        document.getElementById("enquiryForm").addEventListener("submit", function(event) {
+        document.getElementById("enquiryForm").addEventListener("submit", async function(event) {
             event.preventDefault();
 
             let formData = new FormData(this);
             let formObject = {};
             formData.forEach((value, key) => { formObject[key] = value });
 
-            fetch("https://script.google.com/macros/s/AKfycby3MoVGYrfqb2P8sLdu9HlR5hKMqT8kUZq6SAjTNT5gm5lGJEe80-FZy9LslNqjeVVdNg/exec", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formObject)
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("Form submitted successfully!");
-                document.getElementById("enquiryForm").reset();
-            })
-            .catch(error => {
-                alert("Error submitting form: " + error);
-            });
+            let submitBtn = document.getElementById("submitBtn");
+            let message = document.getElementById("message");
+
+            submitBtn.disabled = true;
+            message.textContent = "Submitting...";
+            message.className = "success";
+
+            try {
+                let response = await fetch("https://your-api-url.com/submit", {  // Replace with your Flask API URL
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formObject)
+                });
+
+                let data = await response.json();
+
+                if (response.ok) {
+                    message.textContent = "Form submitted successfully!";
+                    message.className = "success";
+                    document.getElementById("enquiryForm").reset();
+                } else {
+                    throw new Error(data.error || "Something went wrong!");
+                }
+            } catch (error) {
+                message.textContent = "Error: " + error.message;
+                message.className = "error";
+            }
+
+            submitBtn.disabled = false;
         });
     </script>
 
