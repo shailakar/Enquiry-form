@@ -1,31 +1,36 @@
-import requests
-import base64
+from flask import Flask, request, jsonify
+import csv
+import os
 
-# GitHub repo details
-repo = "shailakar/Enquiry-form"
-file_path = "data.csv"
-github_token = "your_github_token"
+app = Flask(__name__)
 
-# Read updated file content
-with open("updated_data.csv", "rb") as f:
-    content = f.read()
-    content_b64 = base64.b64encode(content).decode("utf-8")
+CSV_FILE = "data.csv"
 
-# GitHub API URL
-url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
+# Ensure CSV file exists with headers
+if not os.path.exists(CSV_FILE):
+    with open(CSV_FILE, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address"])
 
-# Fetch the current file SHA (needed for update)
-headers = {"Authorization": f"token {github_token}"}
-response = requests.get(url, headers=headers)
-sha = response.json().get("sha", "")
+@app.route("/submit", methods=["POST"])
+def submit_form():
+    try:
+        data = request.json
+        with open(CSV_FILE, mode="a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([
+                data["parent_name"],
+                data["child_name"],
+                data["phone"],
+                data["email"],
+                data["dob"],
+                data["class"],
+                data["occupation"],
+                data["address"]
+            ])
+        return jsonify({"message": "Form submitted successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-# Prepare API request to update file
-data = {
-    "message": "Update sheet data",
-    "content": content_b64,
-    "sha": sha
-}
-
-# Update file in GitHub
-response = requests.put(url, json=data, headers=headers)
-print(response.json())
+if __name__ == "__main__":
+    app.run(debug=True)
