@@ -30,7 +30,14 @@ def submit_form():
             ])
         return jsonify({"message": "Form submitted successfully!"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 50
+def home():
+    return "Server is running!"
+
+@app.route("/submit", methods=["POST"])
+def submit_form():
+    return "Form received!"  # (Update with CSV saving logic)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
+
