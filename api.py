@@ -34,6 +34,7 @@ def submit_form():
                 data["occupation"],
                 data["address"]
             ])
+        print("Data written to CSV successfully!")
         return jsonify({"message": "Form submitted successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
