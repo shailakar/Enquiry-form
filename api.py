@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import csv
 import os
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 CSV_FILE = "data.csv"
 
@@ -12,12 +14,10 @@ if not os.path.exists(CSV_FILE):
         writer = csv.writer(file)
         writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address"])
 
-# Home Route
 @app.route("/")
 def home():
     return "Server is running!"
 
-# Form Submission Route
 @app.route("/submit", methods=["POST"])
 def submit_form():
     try:
@@ -36,7 +36,7 @@ def submit_form():
             ])
         return jsonify({"message": "Form submitted successfully!"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500  # Corrected error code
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
