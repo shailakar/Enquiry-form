@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import csv
@@ -90,7 +91,7 @@ def submit_form():
                 data["class"],
                 data["occupation"],
                 data["address"],
-                data["Referred by"]
+                #data["Referred by"]
             ])
         
         print("Data appended to CSV successfully!")
