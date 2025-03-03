@@ -89,7 +89,8 @@ def submit_form():
                 data["dob"],
                 data["class"],
                 data["occupation"],
-                data["address"]
+                data["address"],
+                data["Referred by"]
             ])
         
         print("Data appended to CSV successfully!")
