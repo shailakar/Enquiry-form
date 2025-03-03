@@ -1,6 +1,5 @@
 Flask
 gunicorn
 flask-cors
-csv
 boto3
 os
