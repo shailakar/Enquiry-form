@@ -77,7 +77,7 @@
             let formObject = {};
             formData.forEach((value, key) => { formObject[key] = value });
 
-            fetch("https://enquiry-form-3.onrender.com/submit", { // Change this URL to match your Render backend
+            fetch("http://13.201.53.248:5000/submit", { // Change this URL to match your Render backend
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formObject)
