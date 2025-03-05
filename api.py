@@ -6,7 +6,7 @@ import boto3
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://www.eurokidskarimnagar.me"])
 
 # File and AWS S3 Configurations
 CSV_FILE = "enquiry_data.csv"
