@@ -9,33 +9,84 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 40px;
+            background-color: #004080; /* Blue background */
+            color: white;
         }
         .container {
             max-width: 400px;
             margin: auto;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px #ddd;
+            background-color: white;
+            text-align: left;
+            color: black;
         }
         img {
             width: 200px;
             margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
-        input, select, button {
+        h2 {
+            color: red;
+            text-align: center;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: blue;
+        }
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
         button {
-            background-color: #007bff;
+            background-color: red;
             color: white;
             font-size: 16px;
             cursor: pointer;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: darkred;
+        }
+        .social-icons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .social-icons a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+        .social-icons img {
+            width: 40px;
+            height: 40px;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+        .video-container iframe {
+            width: 100%;
+            height: 250px;
+            border-radius: 10px;
+        }
+        #message {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -50,43 +101,117 @@
 
         <!-- Form -->
         <form id="enquiryForm">
-            <input type="text" name="parent_name" placeholder="Your Name" required><br>
-            <input type="text" name="child_name" placeholder="Child's Name" required><br>
-            <input type="tel" name="phone" placeholder="Phone Number" required><br>
-            <input type="email" name="email" placeholder="Email ID" required><br>
-            <input type="date" name="dob" placeholder="Date of Birth" required><br>
-            <select name="class" required>
-                <option value="">Select Class</option>
-                <option value="Playgroup">Playgroup</option>
-                <option value="Nursery">Nursery</option>
-                <option value="LKG">LKG</option>
-                <option value="UKG">UKG</option>
-            </select><br>
-            <input type="text" name="occupation" placeholder="Occupation" required><br>
-            <input type="text" name="address" placeholder="Address" required><br>
+            <div class="form-group">
+                <label for="parent_name">Your Name:</label>
+                <input type="text" id="parent_name" name="parent_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="child_name">Child's Name:</label>
+                <input type="text" id="child_name" name="child_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email ID:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" id="date_of_birth" name="date_of_birth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class">Select Class:</label>
+                <select id="class" name="class" required>
+                    <option value="">Select Class</option>
+                    <option value="Playgroup">Playgroup</option>
+                    <option value="Nursery">Nursery</option>
+                    <option value="LKG">LKG</option>
+                    <option value="UKG">UKG</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation:</label>
+                <input type="text" id="occupation" name="occupation" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="referred_by">Referred By:</label>
+                <input type="text" id="referred_by" name="referred_by" required>
+            </div>
+
             <button type="submit">Submit</button>
         </form>
+
+        <!-- Message Display -->
+        <p id="message"></p>
+
+        <!-- YouTube Video -->
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Wbx_ixan_iI?si=_EE2R93kkkXb-vWN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="social-icons">
+            <a href="https://www.instagram.com/eurokids_karimnagar" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/YOUR_SCHOOL_YOUTUBE" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_social_red_square_%282017%29.svg" alt="YouTube">
+            </a>
+            <a href="https://www.facebook.com/YOUR_SCHOOL_FACEBOOK" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+            </a>
+            <a href="https://wa.me/8555836042" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </a>
+        </div>
     </div>
 
-    <!-- JavaScript to Handle Form Submission -->
     <script>
         document.getElementById("enquiryForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent form from reloading the page
+            
+            const formData = {
+                parent_name: document.getElementById("parent_name").value,
+                child_name: document.getElementById("child_name").value,
+                phone: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+                dob: document.getElementById("date_of_birth").value,
+                class: document.getElementById("class").value,
+                occupation: document.getElementById("occupation").value,
+                address: document.getElementById("address").value,
+                referred_by: document.getElementById("referred_by").value
+            };
 
-            let formData = new FormData(this);
-            let formObject = {};
-            formData.forEach((value, key) => { formObject[key] = value });
-
-            fetch("http://13.201.53.248:5000/submit", { // Change this URL to match your Render backend
+            fetch("http://13.201.53.248:5000/submit", { 
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formObject)
+                body: JSON.stringify(formData)
             })
             .then(response => response.json())
             .then(data => {
-                alert("Form submitted successfully!");
-                document.getElementById("enquiryForm").reset();
+                document.getElementById("message").innerText = data.message || "Form submitted successfully!";
+                document.getElementById("enquiryForm").reset(); 
             })
             .catch(error => {
-                alert("Error submitting form: " + error);
+                document.getElementById("message").innerText = "Error submitting form.";
+                console.error("Error:", error);
             });
+        });
+    </script>
+
+</body>
+</html>
