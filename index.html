@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 40px;
-            background: url('https://enquiryform01.s3.ap-south-1.amazonaws.com/HARI0543.JPG') no-repeat center center/cover; /* Add background image */
+            background: url('https://enquiryform01.s3.ap-south-1.amazonaws.com/HARI0543.JPG') no-repeat center center/cover;
             color: white;
         }
         .container {
@@ -17,7 +17,7 @@
             margin: auto;
             padding: 20px;
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.5); /* More transparency */
+            background-color: rgba(255, 255, 255, 0.5);
             text-align: left;
             color: black;
         }
@@ -139,5 +139,28 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/Wbx_ixan_iI?si=_EE2R93kkkXb-vWN" allowfullscreen></iframe>
         </div>
     </div>
+
+    <script>
+        document.getElementById("enquiryForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch("https://enquiry-form-3.onrender.com/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Enquiry submitted successfully!");
+                this.reset();
+            })
+            .catch(error => {
+                alert("Error submitting enquiry. Please try again.");
+                console.error("Error:", error);
+            });
+        });
+    </script>
+
 </body>
 </html>
