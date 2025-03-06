@@ -26,7 +26,7 @@ s3 = boto3.client(
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address"])
+        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address","Referred by")
 
 def generate_html_from_csv():
     """Reads the CSV and converts it into an HTML table"""
