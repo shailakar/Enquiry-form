@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import csv
@@ -6,7 +5,7 @@ import boto3
 import os
 
 app = Flask(__name__)
-CORS(app, origins=["https://www.eurokidskarimnagar.me"])
+CORS(app)
 
 # File and AWS S3 Configurations
 CSV_FILE = "enquiry_data.csv"
@@ -26,7 +25,7 @@ s3 = boto3.client(
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address","Referred by"])
+        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address", "Referred By"])
 
 def generate_html_from_csv():
     """Reads the CSV and converts it into an HTML table"""
@@ -91,7 +90,7 @@ def submit_form():
                 data["class"],
                 data["occupation"],
                 data["address"],
-                data["Referred by"]
+                data["referred_by"]
             ])
         
         print("Data appended to CSV successfully!")
