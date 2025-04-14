@@ -30,7 +30,7 @@ def initialize_csv():
     if not os.path.exists(CSV_FILE):
         with open(CSV_FILE, mode="w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address", "Referred By"])
+            writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "Class", "Occupation", "Address", "Referred By"])
 
 initialize_csv()
 
@@ -89,7 +89,7 @@ def submit_form():
         with open(CSV_FILE, mode="a", newline="") as file:  # "a" for append mode
             writer = csv.writer(file)
             writer.writerow([data["parent_name"], data["child_name"], data["phone"], data["email"], 
-                             data["dob"], data["class"], data["occupation"], data["address"], data["referred_by"]])
+                             data["class"], data["occupation"], data["address"], data["referred_by"]])
 
         print("Data appended to CSV successfully!")
 
