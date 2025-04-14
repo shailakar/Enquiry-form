@@ -101,7 +101,7 @@ def submit_form():
         if success:
             return jsonify({"message": "Form submitted successfully!"}), 200
         else:
-            return jsonify({"error": "Failed to upload HTML to S3"}), 500
+            return jsonify({"error": "Failed to submit"}), 500
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
