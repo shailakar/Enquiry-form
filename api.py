@@ -3,15 +3,19 @@ from flask_cors import CORS
 import csv
 import boto3
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# File and AWS S3 Configurations
+# File and AWS S3 Configurations from environment variables
 CSV_FILE = "enquiry_data.csv"
-AWS_ACCESS_KEY = "AKIA5CSKK24EK2NCIJPK"  # Replace with your AWS Access Key
-AWS_SECRET_KEY = "tSwivYku7hn62HUoIq7Ci9akczBc97bmjZaMgR7Q"  # Replace with your AWS Secret Key
-S3_BUCKET_NAME = "enquiryform01"  # Your S3 bucket name
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
+S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 S3_FILE_NAME = "enquiry_data.html"  # File name in S3 as HTML
 
 # Initialize S3 Client
@@ -21,11 +25,14 @@ s3 = boto3.client(
     aws_secret_access_key=AWS_SECRET_KEY
 )
 
-# Ensure CSV file exists with headers
-if not os.path.exists(CSV_FILE):
-    with open(CSV_FILE, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address", "Referred By"])
+# Ensure CSV file exists with headers if not already
+def initialize_csv():
+    if not os.path.exists(CSV_FILE):
+        with open(CSV_FILE, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Parent Name", "Child Name", "Phone", "Email", "DOB", "Class", "Occupation", "Address", "Referred By"])
+
+initialize_csv()
 
 def generate_html_from_csv():
     """Reads the CSV and converts it into an HTML table"""
@@ -40,22 +47,22 @@ def generate_html_from_csv():
         html_content += "</table></body></html>"
 
         # Save as an HTML file
-        with open("enquiry_data.html", "w") as html_file:
+        html_file_path = os.path.join(os.getcwd(), "enquiry_data.html")
+        with open(html_file_path, "w") as html_file:
             html_file.write(html_content)
         
-        return "enquiry_data.html"
+        return html_file_path
 
     except Exception as e:
         print(f"Error generating HTML: {e}")
         return None
 
-def upload_to_s3():
+def upload_to_s3(html_file_path):
     """Uploads the updated HTML file to S3 and makes it public"""
     try:
-        html_file = generate_html_from_csv()
-        if html_file:
+        if html_file_path:
             s3.upload_file(
-                html_file,  # Local HTML file
+                html_file_path,  # Local HTML file
                 S3_BUCKET_NAME,  # S3 bucket name
                 S3_FILE_NAME,  # S3 file name
                 ExtraArgs={"ContentType": "text/html", "ACL": "public-read"}  # Set correct content type & make it public
@@ -81,29 +88,20 @@ def submit_form():
         # Append data to CSV file (instead of overwriting)
         with open(CSV_FILE, mode="a", newline="") as file:  # "a" for append mode
             writer = csv.writer(file)
-            writer.writerow([
-                data["parent_name"],
-                data["child_name"],
-                data["phone"],
-                data["email"],
-                data["dob"],
-                data["class"],
-                data["occupation"],
-                data["address"],
-                data["referred_by"]
-            ])
-        
+            writer.writerow([data["parent_name"], data["child_name"], data["phone"], data["email"], 
+                             data["dob"], data["class"], data["occupation"], data["address"], data["referred_by"]])
+
         print("Data appended to CSV successfully!")
 
-        # Upload CSV as HTML to S3 (publicly viewable)
-        success = upload_to_s3()
-
-        if success:
+        # Generate HTML and upload to S3
+        html_file_path = generate_html_from_csv()
+        if upload_to_s3(html_file_path):
             return jsonify({"message": "Form submitted successfully!"}), 200
         else:
-            return jsonify({"error": "Failed to submit"}), 500
+            return jsonify({"error": "Failed to submit data"}), 500
 
     except Exception as e:
+        print(f"Error in form submission: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/get-html-url", methods=["GET"])
